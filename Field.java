@@ -21,6 +21,18 @@ public class Field {
         return row >= 0 && row < 10 && col >= 0 && col < 10;
     }
 
+    public boolean hasWaterablePlant() {
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                Soil soil = grid[row][col];
+                if (soil.hasPlant() && !soil.getPlant().isWatered()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void display() {
         System.out.println("    0  1  2  3  4  5  6  7  8  9");
         System.out.println("   --------------------------------");
