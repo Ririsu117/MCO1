@@ -37,7 +37,8 @@ public class Field {
         System.out.println("    0  1  2  3  4  5  6  7  8  9");
         System.out.println("   --------------------------------");
         for (int row = 0; row < 10; row++) {
-            System.out.print(row + " | ");
+            char rowLabel = (char)('A' + row);
+            System.out.print(rowLabel + " | ");
             for (int col = 0; col < 10; col++) {
                 System.out.print(getTileSymbol(row, col) + "  ");
             }

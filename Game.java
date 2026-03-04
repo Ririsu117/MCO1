@@ -35,6 +35,40 @@ public class Game {
         this.meteoriteExcavationsToday = 0;
         this.scanner = new Scanner(System.in);
     }
+    
+ // Helper method to parse grid position like "A5" into row and column
+    private int[] parsePosition(String position) {
+        if (position == null || position.length() < 2) {
+            return null;
+        }
+        position = position.toUpperCase().trim();
+        char rowChar = position.charAt(0);
+        String colStr = position.substring(1);
+        
+        // Convert letter to row (A=0, B=1, ... J=9)
+        int row = rowChar - 'A';
+        
+        // Parse column number (0-9)
+        int col;
+        try {
+            col = Integer.parseInt(colStr);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+        
+        // Validate range
+        if (row < 0 || row > 9 || col < 0 || col > 9) {
+            return null;
+        }
+        
+        return new int[]{row, col};
+    }
+
+    // Helper method to convert row/col to position string like "A5"
+    private String positionToString(int row, int col) {
+        char rowChar = (char)('A' + row);
+        return rowChar + "" + col;
+    }
 
     public void start() {
         System.out.println("Welcome to Verdant Sun Farming Simulator!");
@@ -142,19 +176,19 @@ public class Game {
             return;
         }
         Plant selectedPlant = affordablePlants.get(plantIndex);
-        System.out.println("Enter row and column to plant (e.g. 3 4): ");
+        System.out.println("Enter position to plant (e.g. A5, B3): ");
         System.out.println("Or type 0 to cancel.");
-        String coords = scanner.nextLine();
-        if (coords.equals("0")) return;
-        int row, col;
-        try {
-            String[] parts = coords.split(" ");
-            row = Integer.parseInt(parts[0]);
-            col = Integer.parseInt(parts[1]);
-        } catch (Exception e) {
-            System.out.println("Invalid input.");
+        String position = scanner.nextLine();
+        if (position.equals("0")) return;
+        int[] coords = parsePosition(position);
+        if (coords == null) {
+            System.out.println("Invalid position format. Use letter+number (e.g. A5)");
             return;
         }
+        
+        int row = coords[0];
+        int col = coords[1];
+        
         if (!field.isValidPosition(row, col)) {
             System.out.println("Invalid position.");
             return;
@@ -178,7 +212,7 @@ public class Game {
         );
         soil.setPlant(newPlant);
         player.deductSavings(selectedPlant.getSeedPrice());
-        System.out.println(selectedPlant.getName() + " planted at row " + row + ", col " + col + "!");
+        System.out.println(selectedPlant.getName() + " planted at " + positionToString(row, col) + "!");
         field.display();
     }
 
@@ -195,37 +229,35 @@ public class Game {
         String choice = scanner.nextLine();
         if (choice.equals("0")) return;
         if (choice.equals("1")) {
-            System.out.println("Enter row and column (e.g. 3 4): ");
-            String coords = scanner.nextLine();
-            int row, col;
-            try {
-                String[] parts = coords.split(" ");
-                row = Integer.parseInt(parts[0]);
-                col = Integer.parseInt(parts[1]);
-            } catch (Exception e) {
-                System.out.println("Invalid input.");
-                return;
-            }
+        	System.out.println("Enter position (e.g. A5): ");
+        	String position = scanner.nextLine();
+        	int[] coords = parsePosition(position);
+        	if (coords == null) {
+        	    System.out.println("Invalid position format.");
+        	    return;
+        	}
+        	
+        	int row = coords[0];
+        	int col = coords[1];
+        	
             waterTile(row, col);
             field.display();
         } else if (choice.equals("2")) {
-            System.out.println("Enter tiles as row col pairs separated by commas (e.g. 3 4,5 6,1 2): ");
-            String input = scanner.nextLine();
-            String[] tiles = input.split(",");
-            for (String tile : tiles) {
-                if (!wateringCan.canWater()) {
-                    System.out.println("Watering can is empty!");
-                    break;
-                }
-                try {
-                    String[] parts = tile.trim().split(" ");
-                    int row = Integer.parseInt(parts[0]);
-                    int col = Integer.parseInt(parts[1]);
-                    waterTile(row, col);
-                } catch (Exception e) {
-                    System.out.println("Invalid input, skipping.");
-                }
-            }
+        	System.out.println("Enter positions separated by commas (e.g. A5,B3,C7): ");
+        	String input = scanner.nextLine();
+        	String[] positions = input.split(",");
+        	for (String position : positions) {
+        	    if (!wateringCan.canWater()) {
+        	        System.out.println("Watering can is empty!");
+        	        break;
+        	    }
+        	    int[] coords = parsePosition(position.trim());
+        	    if (coords == null) {
+        	        System.out.println("Invalid position " + position + ", skipping.");
+        	        continue;
+        	    }
+        	    waterTile(coords[0], coords[1]);
+        	}
             field.display();
         } else {
             System.out.println("Invalid choice.");
@@ -234,21 +266,21 @@ public class Game {
 
     private void waterTile(int row, int col) {
         if (!field.isValidPosition(row, col)) {
-            System.out.println("Invalid position (" + row + ", " + col + "), skipping.");
+        	System.out.println("Invalid position " + positionToString(row, col) + ", skipping.");
             return;
         }
         Soil soil = field.getSoil(row, col);
         if (!soil.hasPlant()) {
-            System.out.println("No plant at (" + row + ", " + col + "), skipping.");
+        	System.out.println("No plant at " + positionToString(row, col) + ", skipping.");
             return;
         }
         if (soil.getPlant().isWatered()) {
-            System.out.println("Plant at (" + row + ", " + col + ") is already watered, skipping.");
+        	System.out.println("Plant at " + positionToString(row, col) + " is already watered, skipping.");
             return;
         }
         soil.getPlant().water();
         wateringCan.useWater();
-        System.out.println("Watered plant at (" + row + ", " + col + ")! Water level: " + wateringCan.getCurrentWaterLevel());
+        System.out.println("Watered plant at " + positionToString(row, col) + "! Water level: " + wateringCan.getCurrentWaterLevel());
     }
 
     private void refillWateringCan() {
@@ -293,37 +325,33 @@ public class Game {
         String tileChoice = scanner.nextLine();
         if (tileChoice.equals("0")) return;
         if (tileChoice.equals("1")) {
-            System.out.println("Enter row and column (e.g. 3 4): ");
-            String coords = scanner.nextLine();
-            int row, col;
-            try {
-                String[] parts = coords.split(" ");
-                row = Integer.parseInt(parts[0]);
-                col = Integer.parseInt(parts[1]);
-            } catch (Exception e) {
-                System.out.println("Invalid input.");
-                return;
-            }
+        	System.out.println("Enter position (e.g. A5): ");
+        	String position = scanner.nextLine();
+        	int[] coords = parsePosition(position);
+        	if (coords == null) {
+        	    System.out.println("Invalid position format.");
+        	    return;
+        	}
+        	int row = coords[0];
+        	int col = coords[1];
             applyFertilizerToTile(row, col, selectedFert);
             field.display();
         } else if (tileChoice.equals("2")) {
-            System.out.println("Enter tiles as row col pairs separated by commas (e.g. 3 4,5 6,1 2): ");
-            String input = scanner.nextLine();
-            String[] tiles = input.split(",");
-            for (String tile : tiles) {
-                if (!player.canAfford(selectedFert.getPrice())) {
-                    System.out.println("Not enough savings to continue fertilizing!");
-                    break;
-                }
-                try {
-                    String[] parts = tile.trim().split(" ");
-                    int row = Integer.parseInt(parts[0]);
-                    int col = Integer.parseInt(parts[1]);
-                    applyFertilizerToTile(row, col, selectedFert);
-                } catch (Exception e) {
-                    System.out.println("Invalid input, skipping.");
-                }
-            }
+        	System.out.println("Enter positions separated by commas (e.g. A5,B3,C7): ");
+        	String input = scanner.nextLine();
+        	String[] positions = input.split(",");
+        	for (String position : positions) {
+        	    if (!player.canAfford(selectedFert.getPrice())) {
+        	        System.out.println("Not enough savings to continue fertilizing!");
+        	        break;
+        	    }
+        	    int[] coords = parsePosition(position.trim());
+        	    if (coords == null) {
+        	        System.out.println("Invalid position " + position + ", skipping.");
+        	        continue;
+        	    }
+        	    applyFertilizerToTile(coords[0], coords[1], selectedFert);
+        	}
             field.display();
         } else {
             System.out.println("Invalid choice.");
@@ -332,12 +360,12 @@ public class Game {
 
     private void applyFertilizerToTile(int row, int col, Fertilizer selectedFert) {
         if (!field.isValidPosition(row, col)) {
-            System.out.println("Invalid position (" + row + ", " + col + "), skipping.");
+        	System.out.println("Invalid position " + positionToString(row, col) + ", skipping.");
             return;
         }
         Soil soil = field.getSoil(row, col);
         if (soil.hasFertilizer()) {
-            System.out.println("Soil at (" + row + ", " + col + ") already has fertilizer, skipping.");
+        	System.out.println("Soil at " + positionToString(row, col) + " already has fertilizer, skipping.");
             return;
         }
         Fertilizer newFert = new Fertilizer(
@@ -347,7 +375,7 @@ public class Game {
         );
         soil.setFertilizer(newFert);
         player.deductSavings(selectedFert.getPrice());
-        System.out.println("Applied " + selectedFert.getName() + " at (" + row + ", " + col + ")! Savings: " + player.getSavings());
+        System.out.println("Applied " + selectedFert.getName() + " at " + positionToString(row, col) + "! Savings: " + player.getSavings());
     }
 
     private void removeOrHarvest() {
@@ -358,47 +386,42 @@ public class Game {
         String choice = scanner.nextLine();
         if (choice.equals("0")) return;
         if (choice.equals("1")) {
-            System.out.println("Enter row and column (e.g. 3 4): ");
-            String coords = scanner.nextLine();
-            int row, col;
-            try {
-                String[] parts = coords.split(" ");
-                row = Integer.parseInt(parts[0]);
-                col = Integer.parseInt(parts[1]);
-            } catch (Exception e) {
-                System.out.println("Invalid input.");
-                return;
-            }
+        	System.out.println("Enter position (e.g. A5): ");
+        	String position = scanner.nextLine();
+        	int[] coords = parsePosition(position);
+        	if (coords == null) {
+        	    System.out.println("Invalid position format.");
+        	    return;
+        	}
+        	int row = coords[0];
+        	int col = coords[1];
             removeOrHarvestTile(row, col);
             field.display();
         } else if (choice.equals("2")) {
-            System.out.println("Enter tiles as row col pairs separated by commas (e.g. 3 4,5 6,1 2): ");
-            String input = scanner.nextLine();
-            String[] tiles = input.split(",");
-            for (String tile : tiles) {
-                try {
-                    String[] parts = tile.trim().split(" ");
-                    int row = Integer.parseInt(parts[0]);
-                    int col = Integer.parseInt(parts[1]);
-                    removeOrHarvestTile(row, col);
-                } catch (Exception e) {
-                    System.out.println("Invalid input, skipping.");
-                }
-            }
-            field.display();
+        	System.out.println("Enter positions separated by commas (e.g. A5,B3,C7): ");
+        	String input = scanner.nextLine();
+        	String[] positions = input.split(",");
+        	for (String position : positions) {
+        	    int[] coords = parsePosition(position.trim());
+        	    if (coords == null) {
+        	        System.out.println("Invalid position " + position + ", skipping.");
+        	        continue;
+        	    }
+        	    removeOrHarvestTile(coords[0], coords[1]);
+        	}
+        	field.display();
         } else {
-            System.out.println("Invalid choice.");
+        	System.out.println("Invalid choice.");
         }
     }
-
     private void removeOrHarvestTile(int row, int col) {
         if (!field.isValidPosition(row, col)) {
-            System.out.println("Invalid position (" + row + ", " + col + "), skipping.");
+        	System.out.println("Invalid position " + positionToString(row, col) + ", skipping.");
             return;
         }
         Soil soil = field.getSoil(row, col);
         if (!soil.hasPlant()) {
-            System.out.println("No plant at (" + row + ", " + col + "), skipping.");
+        	System.out.println("No plant at " + positionToString(row, col) + ", skipping.");
             return;
         }
         Plant plant = soil.getPlant();
@@ -407,7 +430,7 @@ public class Game {
             player.addSavings(harvestValue);
             System.out.println("Harvested " + plant.getName() + " for " + harvestValue + "! Savings: " + player.getSavings());
         } else {
-            System.out.println("Removed " + plant.getName() + " from (" + row + ", " + col + ").");
+        	System.out.println("Removed " + plant.getName() + " from " + positionToString(row, col) + ".");
         }
         soil.setPlant(null);
     }
@@ -424,41 +447,38 @@ public class Game {
         String choice = scanner.nextLine();
         if (choice.equals("0")) return;
         if (choice.equals("1")) {
-            System.out.println("Enter row and column (e.g. 3 4): ");
-            String coords = scanner.nextLine();
-            int row, col;
-            try {
-                String[] parts = coords.split(" ");
-                row = Integer.parseInt(parts[0]);
-                col = Integer.parseInt(parts[1]);
-            } catch (Exception e) {
-                System.out.println("Invalid input.");
-                return;
-            }
+        	System.out.println("Enter position (e.g. D4): ");
+        	String position = scanner.nextLine();
+        	int[] coords = parsePosition(position);
+        	if (coords == null) {
+        	    System.out.println("Invalid position format.");
+        	    return;
+        	}
+        	int row = coords[0];
+        	int col = coords[1];
             excavateTile(row, col);
             field.display();
         } else if (choice.equals("2")) {
-            System.out.println("Enter tiles as row col pairs separated by commas (e.g. 3 4,5 6,1 2): ");
-            String input = scanner.nextLine();
-            String[] tiles = input.split(",");
-            for (String tile : tiles) {
-                if (meteoriteExcavationsToday >= 5) {
-                    System.out.println("Reached excavation limit of 5 tiles for today!");
-                    break;
-                }
-                if (!player.canAfford(500)) {
-                    System.out.println("Not enough savings to continue excavating!");
-                    break;
-                }
-                try {
-                    String[] parts = tile.trim().split(" ");
-                    int row = Integer.parseInt(parts[0]);
-                    int col = Integer.parseInt(parts[1]);
-                    excavateTile(row, col);
-                } catch (Exception e) {
-                    System.out.println("Invalid input, skipping.");
-                }
-            }
+        	System.out.println("Enter positions separated by commas (e.g. D4,D5,E4): ");
+        	String input = scanner.nextLine();
+        	String[] positions = input.split(",");
+        	for (String position : positions) {
+        	    if (meteoriteExcavationsToday >= 5) {
+        	        System.out.println("Reached excavation limit of 5 tiles for today!");
+        	        break;
+        	    }
+        	    if (!player.canAfford(500)) {
+        	        System.out.println("Not enough savings to continue excavating!");
+        	        break;
+        	    }
+        	    int[] coords = parsePosition(position.trim());
+        	    if (coords == null) {
+        	        System.out.println("Invalid position " + position + ", skipping.");
+        	        continue;
+        	    }
+        	    excavateTile(coords[0], coords[1]);
+        	}
+        	
             field.display();
         } else {
             System.out.println("Invalid choice.");
@@ -467,12 +487,12 @@ public class Game {
 
     private void excavateTile(int row, int col) {
         if (!field.isValidPosition(row, col)) {
-            System.out.println("Invalid position (" + row + ", " + col + "), skipping.");
+        	System.out.println("Invalid position " + positionToString(row, col) + ", skipping.");
             return;
         }
         Soil soil = field.getSoil(row, col);
         if (!soil.isMeteoriteTile()) {
-            System.out.println("Tile at (" + row + ", " + col + ") is not a meteorite tile, skipping.");
+        	System.out.println("Tile at " + positionToString(row, col) + " is not a meteorite tile, skipping.");
             return;
         }
         if (!player.canAfford(500)) {
@@ -482,7 +502,7 @@ public class Game {
         player.deductSavings(500);
         soil.excavate();
         meteoriteExcavationsToday++;
-        System.out.println("Excavated tile at (" + row + ", " + col + ")! Savings: " + player.getSavings());
+        System.out.println("Excavated tile at " + positionToString(row, col) + "! Savings: " + player.getSavings());
     }
 
     private void nextDay() {
