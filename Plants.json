@@ -1,1 +1,62 @@
-{"turnip":{"name":"Turnip","price":10,"yield":2,"max_growth":3,"preferred_soil":"loam","crop_price":6},"wheat":{"name":"Wheat","price":15,"yield":4,"max_growth":5,"preferred_soil":"loam","crop_price":5},"thyme":{"name":"Thyme","price":25,"yield":6,"max_growth":10,"preferred_soil":"gravel","crop_price":7},"potato":{"name":"Potato","price":20,"yield":3,"max_growth":7,"preferred_soil":"sand","crop_price":8},"tomato":{"name":"Tomato","price":10,"yield":9,"max_growth":15,"preferred_soil":"sand","crop_price":3}}
+{
+  "turnip": {
+    "name": "Turnip",
+    "price": 10,
+    "yield": 2,
+    "preferred_soil": "loam",
+    "low_crop_name": "Turnip Tops",
+    "low_crop_price": 5,
+    "high_crop_name": "Turnip Tuber",
+    "high_crop_price": 6,
+    "high_crop_is_root": true,
+    "stages": ["seedling", "low_productive", "high_productive", "fully_mature"]
+  },
+  "wheat": {
+    "name": "Wheat",
+    "price": 15,
+    "yield": 4,
+    "preferred_soil": "loam",
+    "low_crop_name": "Wheat Grain",
+    "low_crop_price": 4,
+    "high_crop_name": "Wheat Grain",
+    "high_crop_price": 4,
+    "high_crop_is_root": false,
+    "stages": ["seedling", "dormant", "low_productive", "high_productive", "fully_mature"]
+  },
+  "thyme": {
+    "name": "Thyme",
+    "price": 25,
+    "yield": 6,
+    "preferred_soil": "gravel",
+    "low_crop_name": "Thyme Sprigs",
+    "low_crop_price": 7,
+    "high_crop_name": "Thyme Sprigs",
+    "high_crop_price": 7,
+    "high_crop_is_root": false,
+    "stages": ["seedling", "energizing", "low_productive", "high_productive", "fully_mature"]
+  },
+  "potato": {
+    "name": "Potato",
+    "price": 20,
+    "yield": 3,
+    "preferred_soil": "sand",
+    "low_crop_name": "Small Potatoes",
+    "low_crop_price": 4,
+    "high_crop_name": "Large Potatoes",
+    "high_crop_price": 8,
+    "high_crop_is_root": true,
+    "stages": ["seedling", "dormant", "energizing", "low_productive", "high_productive", "fully_mature"]
+  },
+  "tomato": {
+    "name": "Tomato",
+    "price": 10,
+    "yield": 9,
+    "preferred_soil": "sand",
+    "low_crop_name": "Tomato Berries",
+    "low_crop_price": 5,
+    "high_crop_name": "Tomato Berries",
+    "high_crop_price": 5,
+    "high_crop_is_root": false,
+    "stages": ["seedling", "dormant", "energizing", "dormant", "low_productive", "high_productive", "fully_mature"]
+  }
+}
