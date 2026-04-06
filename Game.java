@@ -254,7 +254,7 @@ public class Game {
     return "Excavated " + positionToString(row, col)
         + "! Restored to " + soil.getType() + " soil, permanently fertilized."
         + " Savings: " + player.getSavings();
-    }
+}
 
     /**
      * Advances the game to the next day using stage-aware growth logic.
