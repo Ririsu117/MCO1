@@ -230,24 +230,30 @@ public class Game {
      * @return A result message string for the GUI to display.
      */
     public String excavateTile(int row, int col) {
-        if (meteoriteExcavationsToday >= 5) {
-            return "Already excavated 5 tiles today (daily limit).";
-        }
-        if (!field.isValidPosition(row, col)) {
-            return "Invalid position.";
-        }
-        Soil soil = field.getSoil(row, col);
-        if (!soil.isMeteoriteTile()) {
-            return positionToString(row, col) + " is not a meteorite tile.";
-        }
-        if (!player.canAfford(500)) {
-            return "Not enough savings to excavate (costs 500g).";
-        }
-        player.deductSavings(500);
-        soil.excavate();
-        meteoriteExcavationsToday++;
-        return "Excavated " + positionToString(row, col)
-            + "! Now permanently fertilized. Savings: " + player.getSavings();
+    if (meteoriteExcavationsToday >= 5) {
+        return "Already excavated 5 tiles today (daily limit).";
+    }
+    if (!field.isValidPosition(row, col)) {
+        return "Invalid position.";
+    }
+    Soil soil = field.getSoil(row, col);
+    if (!soil.isMeteoriteTile()) {
+        return positionToString(row, col) + " is not a meteorite tile.";
+    }
+    if (!player.canAfford(500)) {
+        return "Not enough savings to excavate (costs 500g).";
+    }
+    player.deductSavings(500);
+
+    // Restore original soil type, clear meteorite flag, permanently fertilize
+    player.deductSavings(500);
+    soil.excavate(); // restores type, clears meteorite flag, permanently fertilizes
+    meteoriteExcavationsToday++;
+
+    meteoriteExcavationsToday++;
+    return "Excavated " + positionToString(row, col)
+        + "! Restored to " + soil.getType() + " soil, permanently fertilized."
+        + " Savings: " + player.getSavings();
     }
 
     /**
