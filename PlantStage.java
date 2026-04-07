@@ -1,20 +1,14 @@
 /**
  * Represents a growth stage of a plant in the Verdant Sun Farming Simulator.
  *
- * Each stage defines rules for:
- * • growth progression
- * • watering requirements
- * • fertilizer interactions
- * • crop production behavior
- *
- * Concrete subclasses implement the specific logic for each stage.
+ * Each stage defines behavior for growth progression,
+ * watering requirements, fertilizer interaction,
+ * and crop production.
  */
 public abstract class PlantStage {
 
     /**
      * Identifies the category of plant stage.
-     *
-     * Used for display and stage-specific logic in Game.
      */
     public enum StageType {
         SEEDLING,
@@ -26,86 +20,82 @@ public abstract class PlantStage {
     }
 
     /**
-     * Returns the type of this plant stage.
+     * Returns the type of this stage.
      *
-     * @return StageType identifier of the stage.
+     * @return stage type identifier
      */
     public abstract StageType getStageType();
 
     /**
-     * Indicates whether watering is required for the plant
-     * to progress to the next stage.
+     * Indicates whether watering is required for growth.
      *
-     * @return true if watering is required for growth.
+     * @return true if watering is required
      */
     public abstract boolean needsWatering();
 
     /**
-     * Indicates whether the stage progresses automatically each day
-     * regardless of watering.
+     * Indicates whether the stage progresses automatically.
      *
-     * @return true if the stage progresses automatically.
+     * @return true if stage auto-progresses
      */
     public abstract boolean isAutoProgress();
 
     /**
-     * Indicates whether watering negatively affects growth in this stage.
+     * Indicates whether watering prevents growth.
      *
-     * @return true if watering prevents growth.
+     * @return true if watering harms growth
      */
     public abstract boolean isWateringHarmful();
 
     /**
-     * Returns the base number of stage advancements gained
-     * when growth conditions are met.
+     * Returns the base number of stages progressed.
      *
-     * @return number of stages progressed.
+     * @return base growth value
      */
     public abstract int getBaseGrowth();
 
     /**
-     * Indicates whether this stage produces crop when harvested.
+     * Indicates whether crop can be produced.
      *
-     * @return true if the stage can produce crop.
+     * @return true if crop can be produced
      */
     public abstract boolean canProduceCrop();
 
     /**
-     * Returns the crop yield multiplier applied at harvest.
+     * Returns the crop yield multiplier.
      *
-     * @return multiplier applied to base yield.
+     * @return multiplier applied to crop yield
      */
     public abstract int getYieldMultiplier();
 
     /**
-     * Indicates whether soil and fertilizer bonuses apply in this stage.
+     * Indicates whether soil and fertilizer bonuses apply.
      *
-     * @return true if bonuses are applied.
+     * @return true if bonuses apply
      */
     public abstract boolean acceptsBonuses();
 
     /**
-     * Returns the display label of this stage.
+     * Returns the display name of the stage.
      *
-     * @return human-readable stage name.
+     * @return stage name
      */
     public abstract String getDisplayName();
 
 
+
     /**
-     * Initial plant stage.
+     * Initial stage of plant growth.
      *
-     * Requires watering to grow.
-     * Bonuses from preferred soil and fertilizer are doubled.
+     * Requires watering and accepts bonuses.
      */
     public static class Seedling extends PlantStage {
 
         /**
-         * Returns the stage type identifier.
+         * Returns the stage type.
          *
-         * @return SEEDLING stage type.
+         * @return SEEDLING
          */
-        @Override
         public StageType getStageType() {
             return StageType.SEEDLING;
         }
@@ -115,17 +105,15 @@ public abstract class PlantStage {
          *
          * @return true
          */
-        @Override
         public boolean needsWatering() {
             return true;
         }
 
         /**
-         * Indicates this stage does not auto-progress.
+         * Indicates stage does not auto-progress.
          *
          * @return false
          */
-        @Override
         public boolean isAutoProgress() {
             return false;
         }
@@ -135,37 +123,33 @@ public abstract class PlantStage {
          *
          * @return false
          */
-        @Override
         public boolean isWateringHarmful() {
             return false;
         }
 
         /**
-         * Returns the base growth value.
+         * Returns base growth value.
          *
-         * @return 1 stage progression.
+         * @return 1
          */
-        @Override
         public int getBaseGrowth() {
             return 1;
         }
 
         /**
-         * Indicates this stage cannot produce crop.
+         * Indicates crop cannot be produced.
          *
          * @return false
          */
-        @Override
         public boolean canProduceCrop() {
             return false;
         }
 
         /**
-         * Returns crop multiplier.
+         * Returns crop yield multiplier.
          *
          * @return 0
          */
-        @Override
         public int getYieldMultiplier() {
             return 0;
         }
@@ -175,76 +159,111 @@ public abstract class PlantStage {
          *
          * @return true
          */
-        @Override
         public boolean acceptsBonuses() {
             return true;
         }
 
         /**
-         * Returns display label.
+         * Returns display name.
          *
-         * @return "Seedling"
+         * @return Seedling
          */
-        @Override
         public String getDisplayName() {
             return "Seedling";
         }
     }
 
 
+
     /**
-     * Resting stage of plant.
+     * Resting stage of plant growth.
      *
      * Automatically progresses without watering.
-     * Soil and fertilizer bonuses are ignored.
      */
     public static class Dormant extends PlantStage {
 
-        @Override
+        /**
+         * Returns the stage type.
+         *
+         * @return DORMANT
+         */
         public StageType getStageType() {
             return StageType.DORMANT;
         }
 
-        @Override
+        /**
+         * Indicates watering is not required.
+         *
+         * @return false
+         */
         public boolean needsWatering() {
             return false;
         }
 
-        @Override
+        /**
+         * Indicates stage auto-progresses.
+         *
+         * @return true
+         */
         public boolean isAutoProgress() {
             return true;
         }
 
-        @Override
+        /**
+         * Indicates watering does not harm growth.
+         *
+         * @return false
+         */
         public boolean isWateringHarmful() {
             return false;
         }
 
-        @Override
+        /**
+         * Returns base growth value.
+         *
+         * @return 1
+         */
         public int getBaseGrowth() {
             return 1;
         }
 
-        @Override
+        /**
+         * Indicates crop cannot be produced.
+         *
+         * @return false
+         */
         public boolean canProduceCrop() {
             return false;
         }
 
-        @Override
+        /**
+         * Returns crop yield multiplier.
+         *
+         * @return 0
+         */
         public int getYieldMultiplier() {
             return 0;
         }
 
-        @Override
+        /**
+         * Indicates bonuses do not apply.
+         *
+         * @return false
+         */
         public boolean acceptsBonuses() {
             return false;
         }
 
-        @Override
+        /**
+         * Returns display name.
+         *
+         * @return Dormant
+         */
         public String getDisplayName() {
             return "Dormant";
         }
     }
+
 
 
     /**
@@ -252,218 +271,362 @@ public abstract class PlantStage {
      *
      * Automatically progresses.
      * Watering prevents growth.
-     * Fertilizer loses an additional day of effectiveness.
      */
     public static class Energizing extends PlantStage {
 
-        @Override
+        /**
+         * Returns the stage type.
+         *
+         * @return ENERGIZING
+         */
         public StageType getStageType() {
             return StageType.ENERGIZING;
         }
 
-        @Override
+        /**
+         * Indicates watering is not required.
+         *
+         * @return false
+         */
         public boolean needsWatering() {
             return false;
         }
 
-        @Override
+        /**
+         * Indicates stage auto-progresses.
+         *
+         * @return true
+         */
         public boolean isAutoProgress() {
             return true;
         }
 
-        @Override
+        /**
+         * Indicates watering harms growth.
+         *
+         * @return true
+         */
         public boolean isWateringHarmful() {
             return true;
         }
 
-        @Override
+        /**
+         * Returns base growth value.
+         *
+         * @return 1
+         */
         public int getBaseGrowth() {
             return 1;
         }
 
-        @Override
+        /**
+         * Indicates crop cannot be produced.
+         *
+         * @return false
+         */
         public boolean canProduceCrop() {
             return false;
         }
 
-        @Override
+        /**
+         * Returns crop yield multiplier.
+         *
+         * @return 0
+         */
         public int getYieldMultiplier() {
             return 0;
         }
 
-        @Override
+        /**
+         * Indicates bonuses do not apply.
+         *
+         * @return false
+         */
         public boolean acceptsBonuses() {
             return false;
         }
 
-        @Override
+        /**
+         * Returns display name.
+         *
+         * @return Energizing
+         */
         public String getDisplayName() {
             return "Energizing";
         }
     }
 
 
+
     /**
      * First productive stage of plant.
      *
-     * Requires watering.
-     * Accepts soil and fertilizer bonuses.
-     * Produces 1x crop yield.
+     * Requires watering and produces crop.
      */
     public static class LowProductive extends PlantStage {
 
-        @Override
+        /**
+         * Returns the stage type.
+         *
+         * @return LOW_PRODUCTIVE
+         */
         public StageType getStageType() {
             return StageType.LOW_PRODUCTIVE;
         }
 
-        @Override
+        /**
+         * Indicates watering is required.
+         *
+         * @return true
+         */
         public boolean needsWatering() {
             return true;
         }
 
-        @Override
+        /**
+         * Indicates stage does not auto-progress.
+         *
+         * @return false
+         */
         public boolean isAutoProgress() {
             return false;
         }
 
-        @Override
+        /**
+         * Indicates watering does not harm growth.
+         *
+         * @return false
+         */
         public boolean isWateringHarmful() {
             return false;
         }
 
-        @Override
+        /**
+         * Returns base growth value.
+         *
+         * @return 1
+         */
         public int getBaseGrowth() {
             return 1;
         }
 
-        @Override
+        /**
+         * Indicates crop can be produced.
+         *
+         * @return true
+         */
         public boolean canProduceCrop() {
             return true;
         }
 
-        @Override
+        /**
+         * Returns crop yield multiplier.
+         *
+         * @return 1
+         */
         public int getYieldMultiplier() {
             return 1;
         }
 
-        @Override
+        /**
+         * Indicates bonuses apply.
+         *
+         * @return true
+         */
         public boolean acceptsBonuses() {
             return true;
         }
 
-        @Override
+        /**
+         * Returns display name.
+         *
+         * @return Low Productive
+         */
         public String getDisplayName() {
             return "Low Productive";
         }
     }
 
 
+
     /**
-     * High productivity stage.
+     * High productivity stage of plant.
      *
-     * Requires watering.
-     * Accepts bonuses.
-     * Produces 2x crop yield.
+     * Produces double crop yield.
      */
     public static class HighProductive extends PlantStage {
 
-        @Override
+        /**
+         * Returns the stage type.
+         *
+         * @return HIGH_PRODUCTIVE
+         */
         public StageType getStageType() {
             return StageType.HIGH_PRODUCTIVE;
         }
 
-        @Override
+        /**
+         * Indicates watering is required.
+         *
+         * @return true
+         */
         public boolean needsWatering() {
             return true;
         }
 
-        @Override
+        /**
+         * Indicates stage does not auto-progress.
+         *
+         * @return false
+         */
         public boolean isAutoProgress() {
             return false;
         }
 
-        @Override
+        /**
+         * Indicates watering does not harm growth.
+         *
+         * @return false
+         */
         public boolean isWateringHarmful() {
             return false;
         }
 
-        @Override
+        /**
+         * Returns base growth value.
+         *
+         * @return 1
+         */
         public int getBaseGrowth() {
             return 1;
         }
 
-        @Override
+        /**
+         * Indicates crop can be produced.
+         *
+         * @return true
+         */
         public boolean canProduceCrop() {
             return true;
         }
 
-        @Override
+        /**
+         * Returns crop yield multiplier.
+         *
+         * @return 2
+         */
         public int getYieldMultiplier() {
             return 2;
         }
 
-        @Override
+        /**
+         * Indicates bonuses apply.
+         *
+         * @return true
+         */
         public boolean acceptsBonuses() {
             return true;
         }
 
-        @Override
+        /**
+         * Returns display name.
+         *
+         * @return High Productive
+         */
         public String getDisplayName() {
             return "High Productive";
         }
     }
 
 
+
     /**
-     * Final growth stage.
+     * Final stage of plant growth.
      *
      * Does not progress further.
-     * Produces 2x crop yield.
      */
     public static class FullyMature extends PlantStage {
 
-        @Override
+        /**
+         * Returns the stage type.
+         *
+         * @return FULLY_MATURE
+         */
         public StageType getStageType() {
             return StageType.FULLY_MATURE;
         }
 
-        @Override
+        /**
+         * Indicates watering is not required.
+         *
+         * @return false
+         */
         public boolean needsWatering() {
             return false;
         }
 
-        @Override
+        /**
+         * Indicates stage does not auto-progress.
+         *
+         * @return false
+         */
         public boolean isAutoProgress() {
             return false;
         }
 
-        @Override
+        /**
+         * Indicates watering does not harm growth.
+         *
+         * @return false
+         */
         public boolean isWateringHarmful() {
             return false;
         }
 
-        @Override
+        /**
+         * Returns base growth value.
+         *
+         * @return 0
+         */
         public int getBaseGrowth() {
             return 0;
         }
 
-        @Override
+        /**
+         * Indicates crop can be produced.
+         *
+         * @return true
+         */
         public boolean canProduceCrop() {
             return true;
         }
 
-        @Override
+        /**
+         * Returns crop yield multiplier.
+         *
+         * @return 2
+         */
         public int getYieldMultiplier() {
             return 2;
         }
 
+        /**
+         * Indicates bonuses do not apply.
+         *
+         * @return false
+         */
         public boolean acceptsBonuses() {
             return false;
         }
 
+        /**
+         * Returns display name.
+         *
+         * @return Fully Mature
+         */
         public String getDisplayName() {
             return "Fully Mature";
         }
     }
+
 }
