@@ -356,10 +356,6 @@ public class Game {
         return sb.toString();
     }
 
-    // =========================================================
-    // Getters used by GameGUI
-    // =========================================================
-
     /** @return The game field. */
     public Field getField() { return field; }
 
