@@ -7,18 +7,6 @@ import java.awt.event.*;
  * Each button represents a soil tile and is color-coded based on its current
  * state: soil type, plant growth stage, meteorite impact, or excavation.
  *
- * Stage colors match the spec legend:
- *   Seedling       = Green
- *   Dormant        = Blue
- *   Energizing     = Purple
- *   Low Productive = Orange
- *   High Productive= Red
- *   Fully Mature   = Black (white text)
- *   Meteorite tile = Gray
- *   Excavated tile = Yellow
- *   Empty loam     = Light tan
- *   Empty sand     = Khaki
- *   Empty gravel   = Light gray
  */
 public class FieldPanel extends JPanel {
 
