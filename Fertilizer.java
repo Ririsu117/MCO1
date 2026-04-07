@@ -2,7 +2,7 @@
  * Represents a fertilizer that can be applied to soil tiles in the
  * Verdant Sun Farming Simulator to enhance plant growth.
  *
- * In MCO2, a special Meteorite Fertilizer variant exists for tiles
+ * A special Meteorite Fertilizer variant exists for tiles
  * excavated after the meteorite event. This variant is considered
  * permanently active and is never consumed by day progression.
  * The isMeteoriteFertilizer flag identifies this variant so that
@@ -53,7 +53,7 @@ public class Fertilizer {
 
     /**
      * Reduces the remaining active days of the fertilizer by one.
-     * If this is a Meteorite Fertilizer, this method does nothing —
+     * If this is a Meteorite Fertilizer, this method does nothing.
      * meteorite fertilizer is never consumed.
      */
     public void consumeDay() {
