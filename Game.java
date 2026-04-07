@@ -2,25 +2,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Core game logic controller for the Verdant Sun Farming Simulator (MCO2).
+ * Core game logic controller.
  * This class manages all game state and rules with no CLI input or output.
  * All actions return result strings that the GUI displays to the player.
  *
  * The GameGUI class owns this Game instance and calls its public methods
  * in response to player interactions.
- *
- * Fields:
- *   player                    - The player of the game
- *   field                     - The 10x10 game field
- *   wateringCan               - The player's watering can
- *   highScoreTable            - Top 10 high scores
- *   availablePlants           - All plantable plant templates
- *   availableFertilizers      - All purchasable fertilizers
- *   currentDay                - The current game day (1-20)
- *   maxDays                   - Total days in the season (20)
- *   meteoriteHit              - True once the meteorite event has fired
- *   meteoriteCoords           - Grid coords of meteorite-affected tiles
- *   meteoriteExcavationsToday - Tiles excavated today (max 5)
  */
 public class Game {
     private Player player;
