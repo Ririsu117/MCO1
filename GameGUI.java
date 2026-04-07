@@ -19,16 +19,13 @@ import java.util.List;
  */
 public class GameGUI extends JFrame {
 
-    // ── Core game logic ──────────────────────────────────────
     private Game game;
     private FieldPanel fieldPanel;
 
-    // ── Top status bar labels ────────────────────────────────
     private JLabel lblDay;
     private JLabel lblSavings;
     private JLabel lblWater;
 
-    // ── Action buttons ───────────────────────────────────────
     private JButton btnPlant;
     private JButton btnWater;
     private JButton btnRefill;
@@ -37,10 +34,8 @@ public class GameGUI extends JFrame {
     private JButton btnExcavate;
     private JButton btnNextDay;
 
-    // ── Action log ───────────────────────────────────────────
     private JTextArea logArea;
 
-    // ── Pending action state ─────────────────────────────────
     /** Tracks which action is waiting for a tile click. */
     private enum PendingAction {
         NONE, PLANT, WATER, FERTILIZE, HARVEST, EXCAVATE
@@ -82,21 +77,17 @@ public class GameGUI extends JFrame {
         setLayout(new BorderLayout(6, 6));
         getRootPane().setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        // Top: status bar
         JPanel statusPanel = buildStatusPanel();
         add(statusPanel, BorderLayout.NORTH);
 
-        // Center: field grid
         fieldPanel = new FieldPanel(game.getField());
         fieldPanel.setTileClickListener(this::onTileClicked);
         fieldPanel.setPreferredSize(new Dimension(520, 520));
         add(fieldPanel, BorderLayout.CENTER);
 
-        // Right: action buttons + legend
         JPanel rightPanel = buildRightPanel();
         add(rightPanel, BorderLayout.EAST);
 
-        // Bottom: action log
         JPanel logPanel = buildLogPanel();
         add(logPanel, BorderLayout.SOUTH);
 
@@ -142,7 +133,6 @@ public class GameGUI extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
         panel.setPreferredSize(new Dimension(170, 520));
 
-        // Action buttons
         JLabel actionsLabel = new JLabel("ACTIONS");
         actionsLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
         actionsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -183,7 +173,6 @@ public class GameGUI extends JFrame {
 
         panel.add(Box.createVerticalStrut(16));
 
-        // Color legend
         panel.add(buildLegendPanel());
 
         return panel;
@@ -267,10 +256,6 @@ public class GameGUI extends JFrame {
         btn.setFocusPainted(false);
         return btn;
     }
-
-    // =========================================================
-    // Action handlers
-    // =========================================================
 
     /**
      * Handles a tile click on the field panel.
@@ -481,25 +466,18 @@ public class GameGUI extends JFrame {
             System.exit(0);
         }
     }
-
-    // =========================================================
-    // UI helpers
-    // =========================================================
-
+    
     /**
      * Refreshes all display components to reflect the current game state.
      * Updates the status bar, field panel, and button enabled states.
      */
     private void refresh() {
-        // Update status labels
         lblDay.setText("Day: " + game.getCurrentDay() + "/" + game.getMaxDays());
         lblSavings.setText("Savings: " + game.getSavings() + "g");
         lblWater.setText("Water: " + game.getWaterLevel() + "/" + game.getMaxWaterLevel());
 
-        // Update field display
         fieldPanel.refresh();
 
-        // Update button states
         btnWater.setEnabled(game.hasWaterablePlant() && game.canWater());
         btnRefill.setEnabled(game.canAffordRefill());
         btnExcavate.setEnabled(
