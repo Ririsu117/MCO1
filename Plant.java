@@ -1,7 +1,7 @@
 /**
  * Represents a plant that can be grown in the Verdant Sun Farming Simulator.
  *
- * In MCO2, each plant progresses through a sequence of PlantStage objects
+ * Each plant progresses through a sequence of PlantStage objects
  * rather than a simple integer growth counter. The plant tracks its current
  * position in that stage sequence, and all growth, watering, and harvest
  * behavior is delegated to the active PlantStage.
