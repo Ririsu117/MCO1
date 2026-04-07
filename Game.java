@@ -259,14 +259,6 @@ public class Game {
     /**
      * Advances the game to the next day using stage-aware growth logic.
      *
-     * Stage-aware nextDay sequence:
-     *   1. Stage-based plant growth (watered, auto-progress, energizing rules).
-     *   2. Watered flags reset.
-     *   3. Fertilizer consumption (extra day consumed during Energizing stage).
-     *   4. Player earns 50 gold.
-     *   5. Day advances; excavation counter resets.
-     *   6. Meteorite fires at end of day 15 (when currentDay becomes 16).
-     *
      * @return A result message string including any special events.
      */
     public String nextDay() {
