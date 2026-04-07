@@ -3,7 +3,7 @@
  * Each tile may contain a plant, fertilizer, or special states such as
  * meteorite tiles or permanently fertilized (excavated) tiles.
  *
- * In MCO2, tile display symbols now reflect the plant's current growth
+ * Tile display symbols now reflect the plant's current growth
  * stage rather than just mature vs. growing, and watering checks
  * account for stage-based watering rules.
  */
@@ -22,7 +22,7 @@ public class Field {
      * Initializes the grid using a provided layout of soil types.
      *
      * @param layout A 2D array containing soil type strings
-     *               (e.g., "loam", "sand", "gravel") for each tile.
+     *  (e.g., "loam", "sand", "gravel") for each tile.
      */
     public void initializeGrid(String[][] layout) {
         for (int row = 0; row < 10; row++) {
@@ -57,7 +57,7 @@ public class Field {
 
     /**
      * Determines if there are any plants in the field that can be watered.
-     * In MCO2, a plant is waterable only if its current stage requires
+     * A plant is waterable only if its current stage requires
      * watering (needsWatering() is true) and it has not already been
      * watered today.
      *
@@ -81,17 +81,6 @@ public class Field {
     /**
      * Displays the field grid in the console with row and column labels.
      * Each tile symbol represents the current state of that soil tile.
-     *
-     * Symbol legend:
-     *   X  = meteorite tile (unexcavated)
-     *   E  = excavated meteorite tile (permanently fertilized)
-     *   FM = fully mature plant (ready to harvest at 2x yield)
-     *   HP = high productive plant (harvestable at 2x yield)
-     *   LP = low productive plant (harvestable at 1x yield)
-     *   EN = energizing stage plant
-     *   DR = dormant stage plant
-     *   SD = seedling stage plant
-     *   First letter of soil type = empty tile (L, S, or G)
      */
     public void display() {
         System.out.println("     0   1   2   3   4   5   6   7   8   9");
@@ -112,7 +101,7 @@ public class Field {
 
     /**
      * Determines the symbol used to represent a tile when the field is displayed.
-     * Symbols now reflect the plant's current growth stage in MCO2.
+     * Symbols now reflect the plant's current growth stage.
      *
      * @param row The row index of the tile.
      * @param col The column index of the tile.
