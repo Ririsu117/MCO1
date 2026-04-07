@@ -7,12 +7,6 @@ import java.util.List;
  * Built with Java Swing. Displays the field, player stats, action buttons,
  * and a log of recent actions.
  *
- * Layout:
- *   - Top bar:    Day / Savings / Water level labels
- *   - Center:     FieldPanel (10x10 colored tile grid)
- *   - Right panel: Action buttons + color legend
- *   - Bottom:     Scrollable action log
- *
  * The GUI uses a simple "pending action" state machine. When the player
  * clicks an action button, the GUI enters a mode where the next tile
  * click performs that action on the selected tile.
@@ -50,8 +44,6 @@ public class GameGUI extends JFrame {
      */
     public GameGUI() {
         game = new Game();
-
-        // Ask for player name via dialog before showing main window
         String name = JOptionPane.showInputDialog(
             null,
             "Enter your farmer name:",
@@ -267,7 +259,6 @@ public class GameGUI extends JFrame {
      */
     private void onTileClicked(int row, int col) {
         if (pendingAction == PendingAction.NONE) {
-            // No action pending — show tile info
             showTileInfo(row, col);
             return;
         }
