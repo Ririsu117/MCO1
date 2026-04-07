@@ -2,7 +2,7 @@
  * Represents a single soil tile in the field of the
  * Verdant Sun Farming Simulator.
  *
- * In MCO2, a soil tile additionally tracks its original soil type
+ * A soil tile additionally tracks its original soil type
  * (so it can be restored after a meteorite excavation) and whether
  * it has been permanently fertilized (excavated meteorite tiles are
  * considered fertilized indefinitely, bypassing normal fertilizer logic).
