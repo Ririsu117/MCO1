@@ -1,6 +1,6 @@
 /**
- * Represents a fertilizer that can be applied to soil tiles in the
- * Verdant Sun Farming Simulator to enhance plant growth.
+ * Represents a fertilizer that can be applied to soil tiles 
+ * to enhance plant growth.
  *
  * A special Meteorite Fertilizer variant exists for tiles
  * excavated after the meteorite event. This variant is considered
