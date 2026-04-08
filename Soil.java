@@ -2,171 +2,214 @@
  * Represents a single soil tile in the field of the
  * Verdant Sun Farming Simulator.
  *
- * A soil tile additionally tracks its original soil type
- * (so it can be restored after a meteorite excavation) and whether
- * it has been permanently fertilized (excavated meteorite tiles are
- * considered fertilized indefinitely, bypassing normal fertilizer logic).
+ * Each tile stores information about:
+ * - soil classification (loam, sand, gravel)
+ * - plant currently growing on the tile
+ * - fertilizer effects applied to the tile
+ * - meteorite impact state
+ * - excavation status
+ *
+ * Soil tiles remember their original soil type so that
+ * meteorite-damaged tiles can be restored after excavation.
+ *
+ * Excavated meteorite tiles become permanently fertilized,
+ * meaning they always provide fertilizer growth bonuses and
+ * do not require temporary fertilizer application.
  */
 public class Soil {
+
     private String type;
     private String originalType;
     private Plant plant;
     private Fertilizer fertilizer;
+
     private boolean isMeteoriteTile;
     private boolean isExcavated;
     private boolean isPermanentlyFertilized;
 
     /**
-     * Constructs a Soil object with a specified soil type.
-     * The original type is stored separately so it can be restored
-     * after a meteorite excavation.
+     * Creates a soil tile with the specified soil type.
      *
-     * @param type The type of soil (e.g., "loam", "sand", or "gravel").
+     * The original soil type is stored separately so the tile
+     * can be restored if a meteorite impact is excavated.
+     *
+     * @param type soil classification ("loam", "sand", or "gravel")
      */
     public Soil(String type) {
+
         this.type = type;
+
         this.originalType = type;
+
         this.plant = null;
+
         this.fertilizer = null;
+
         this.isMeteoriteTile = false;
+
         this.isExcavated = false;
+
         this.isPermanentlyFertilized = false;
     }
 
     /**
-     * Checks whether the soil tile currently has a plant.
+     * Checks whether a plant currently exists on this tile.
      *
-     * @return true if a plant is present, false otherwise.
+     * @return true if a plant is present
      */
     public boolean hasPlant() {
+
         return plant != null;
     }
 
     /**
-     * Checks whether the soil tile currently has a temporary fertilizer applied.
-     * Note: permanently fertilized tiles (post-excavation) do not use a
-     * Fertilizer object — use isPermanentlyFertilized() for those.
+     * Checks whether a temporary fertilizer is applied.
      *
-     * @return true if a Fertilizer object is present, false otherwise.
+     * Permanently fertilized tiles do not use a Fertilizer object.
+     *
+     * @return true if a temporary fertilizer exists
      */
     public boolean hasFertilizer() {
+
         return fertilizer != null;
     }
 
     /**
-     * Checks whether this tile provides a fertilizer bonus to plant growth.
-     * Returns true if either a temporary Fertilizer is applied OR the tile
-     * has been permanently fertilized through meteorite excavation.
+     * Determines whether this tile provides a fertilizer growth bonus.
      *
-     * @return true if any fertilizer effect is active on this tile.
+     * Fertilizer bonus applies if:
+     * - temporary fertilizer is present OR
+     * - tile is permanently fertilized via excavation
+     *
+     * @return true if fertilizer effect is active
      */
     public boolean isFertilized() {
+
         return fertilizer != null || isPermanentlyFertilized;
     }
 
     /**
-     * Marks or unmarks this tile as a meteorite-impacted tile.
+     * Sets whether this tile is marked as a meteorite tile.
      *
-     * @param value true to mark as meteorite tile, false to unmark.
+     * @param value true to mark as meteorite tile
      */
     public void setMeteoriteTile(boolean value) {
+
         this.isMeteoriteTile = value;
     }
 
     /**
-     * Excavates this meteorite tile. Restores the soil type to its original
-     * value, removes meteorite status, marks the tile as excavated, and
-     * permanently fertilizes the tile indefinitely.
+     * Excavates a meteorite tile.
+     *
+     * Effects:
+     * - removes meteorite status
+     * - restores original soil type
+     * - marks tile as excavated
+     * - permanently fertilizes the tile
      */
     public void excavate() {
+
         this.isMeteoriteTile = false;
+
         this.isExcavated = true;
+
         this.type = this.originalType;
+
         this.isPermanentlyFertilized = true;
     }
 
     /**
-     * Returns the current soil type of this tile.
+     * Returns the current soil type.
      *
-     * @return The soil type string.
+     * @return soil classification string
      */
     public String getType() {
+
         return type;
     }
 
     /**
-     * Returns the original soil type of this tile before any meteorite event.
+     * Returns the original soil type before meteorite impact.
      *
-     * @return The original soil type string.
+     * @return original soil classification
      */
     public String getOriginalType() {
+
         return originalType;
     }
 
     /**
-     * Returns the plant currently growing on this soil tile.
+     * Returns the plant currently on this tile.
      *
-     * @return The Plant object, or null if no plant is present.
+     * @return Plant object or null if empty
      */
     public Plant getPlant() {
+
         return plant;
     }
 
     /**
-     * Places a plant on this soil tile.
+     * Places or removes a plant on this tile.
      *
-     * @param plant The Plant to place, or null to clear the tile.
+     * @param plant Plant to place, or null to remove plant
      */
     public void setPlant(Plant plant) {
+
         this.plant = plant;
     }
 
     /**
-     * Returns the temporary fertilizer currently applied to this soil tile.
-     * Returns null if no temporary fertilizer is present (check
-     * isPermanentlyFertilized separately if needed).
+     * Returns the temporary fertilizer applied to this tile.
      *
-     * @return The Fertilizer object, or null if none is applied.
+     * Does not apply to permanently fertilized tiles.
+     *
+     * @return Fertilizer object or null
      */
     public Fertilizer getFertilizer() {
+
         return fertilizer;
     }
 
     /**
-     * Applies a temporary fertilizer to this soil tile.
+     * Applies or removes temporary fertilizer.
      *
-     * @param fertilizer The Fertilizer to apply, or null to remove it.
+     * @param fertilizer Fertilizer to apply, or null to remove
      */
     public void setFertilizer(Fertilizer fertilizer) {
+
         this.fertilizer = fertilizer;
     }
 
     /**
-     * Checks if this tile is currently marked as a meteorite-impacted tile.
+     * Checks whether this tile is currently marked as a meteorite tile.
      *
-     * @return true if the tile is a meteorite tile, false otherwise.
+     * @return true if tile contains meteorite damage
      */
     public boolean isMeteoriteTile() {
+
         return isMeteoriteTile;
     }
 
     /**
-     * Checks if this tile has been excavated after a meteorite impact.
+     * Checks whether this tile has been excavated.
      *
-     * @return true if the tile has been excavated, false otherwise.
+     * @return true if excavation has occurred
      */
     public boolean isExcavated() {
+
         return isExcavated;
     }
 
     /**
-     * Checks if this tile is permanently fertilized due to meteorite excavation.
-     * Permanently fertilized tiles provide a fertilizer growth bonus indefinitely
-     * and are never consumed, unlike temporary Fertilizer objects.
+     * Checks whether this tile is permanently fertilized.
      *
-     * @return true if the tile is permanently fertilized, false otherwise.
+     * Permanently fertilized tiles provide infinite fertilizer bonuses
+     * and are never consumed.
+     *
+     * @return true if permanently fertilized
      */
     public boolean isPermanentlyFertilized() {
+
         return isPermanentlyFertilized;
     }
 }
