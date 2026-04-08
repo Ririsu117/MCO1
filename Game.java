@@ -19,7 +19,7 @@ import java.util.List;
  * in response to player interactions.
  */
 public class Game {
-
+    
     private Player player;
     private Field field;
     private WateringCan wateringCan;
@@ -45,23 +45,15 @@ public class Game {
      * - excavation limit = 5 tiles per day
      */
     public Game() {
-
+        
         this.field = new Field();
-
         this.wateringCan = new WateringCan(10);
-
         this.highScoreTable = new HighScoreTable();
-
         this.availablePlants = new ArrayList<>();
-
         this.availableFertilizers = new ArrayList<>();
-
         this.currentDay = 1;
-
         this.maxDays = 20;
-
         this.meteoriteHit = false;
-
         this.meteoriteCoords = new int[][] {
 
             {3,3},{3,4},{3,5},{3,6},
@@ -88,17 +80,12 @@ public class Game {
      * @param playerName the name entered by the player
      */
     public void initialize(String playerName) {
-
+        
         this.player = new Player(playerName);
-
         this.availablePlants = JSONLoader.loadPlants("Plants.json");
-
         this.availableFertilizers = JSONLoader.loadFertilizers("Fertilizers.json");
-
         String[][] mapLayout = JSONLoader.loadMap("Map.json");
-
         field.initializeGrid(mapLayout);
-
         JSONLoader.loadHighScores("HighScores.json", highScoreTable);
     }
 
