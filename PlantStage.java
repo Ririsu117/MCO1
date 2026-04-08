@@ -1,84 +1,92 @@
 /**
- * Represents a growth stage of a plant in the Verdant Sun Farming Simulator.
+ * Represents a growth stage in a plant's lifecycle in the Verdant Sun Farming Simulator.
  *
- * Each stage defines behavior for growth progression,
- * watering requirements, fertilizer interaction,
- * and crop production.
+ * Each PlantStage defines how a plant behaves during that stage, including:
+ * - whether watering is required
+ * - whether the stage progresses automatically
+ * - whether watering negatively affects growth
+ * - how many stages the plant advances per day
+ * - whether crop can be produced
+ * - whether soil or fertilizer bonuses apply
+ *
+ * Concrete subclasses implement the specific rules for each stage.
  */
 public abstract class PlantStage {
 
     /**
-     * Identifies the category of plant stage.
+     * Identifies the category of growth stage.
      */
     public enum StageType {
+
         SEEDLING,
         DORMANT,
         ENERGIZING,
         LOW_PRODUCTIVE,
         HIGH_PRODUCTIVE,
         FULLY_MATURE
+
     }
 
     /**
-     * Returns the type of this stage.
+     * Returns the type identifier of this growth stage.
      *
-     * @return stage type identifier
+     * @return StageType representing the current stage
      */
     public abstract StageType getStageType();
 
     /**
-     * Indicates whether watering is required for growth.
+     * Indicates whether the plant must be watered in order to grow.
      *
-     * @return true if watering is required
+     * @return true if watering is required for progression
      */
     public abstract boolean needsWatering();
 
     /**
-     * Indicates whether the stage progresses automatically.
+     * Indicates whether the plant automatically progresses to the next stage.
      *
-     * @return true if stage auto-progresses
+     * @return true if the stage advances without watering
      */
     public abstract boolean isAutoProgress();
 
     /**
-     * Indicates whether watering prevents growth.
+     * Indicates whether watering negatively affects growth progression.
      *
-     * @return true if watering harms growth
+     * @return true if watering prevents growth in this stage
      */
     public abstract boolean isWateringHarmful();
 
     /**
-     * Returns the base number of stages progressed.
+     * Returns the number of stage steps the plant advances in one day.
      *
-     * @return base growth value
+     * @return base number of growth steps
      */
     public abstract int getBaseGrowth();
 
     /**
-     * Indicates whether crop can be produced.
+     * Indicates whether the plant can produce crop in this stage.
      *
-     * @return true if crop can be produced
+     * @return true if harvesting produces crop
      */
     public abstract boolean canProduceCrop();
 
     /**
-     * Returns the crop yield multiplier.
+     * Returns the multiplier applied to the plant's base yield.
      *
-     * @return multiplier applied to crop yield
+     * @return crop yield multiplier value
      */
     public abstract int getYieldMultiplier();
 
     /**
-     * Indicates whether soil and fertilizer bonuses apply.
+     * Indicates whether soil preference and fertilizer bonuses apply.
      *
-     * @return true if bonuses apply
+     * @return true if bonuses affect growth speed
      */
     public abstract boolean acceptsBonuses();
 
     /**
-     * Returns the display name of the stage.
+     * Returns the display name used in the GUI and logs.
      *
-     * @return stage name
+     * @return readable stage name
      */
     public abstract String getDisplayName();
 
