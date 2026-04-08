@@ -175,12 +175,12 @@ public class GameGUI extends JFrame {
         panel.add(actionsLabel);
         panel.add(Box.createVerticalStrut(6));
 
-        btnPlant = makeActionButton("🌱 Plant Seed");
-        btnWater = makeActionButton("💧 Water Plant");
-        btnRefill = makeActionButton("🪣 Refill Can");
-        btnFertilize = makeActionButton("🧪 Fertilize");
-        btnHarvest = makeActionButton("🪏 Remove/Harvest");
-        btnExcavate = makeActionButton("⛏️ Excavate");
+        btnPlant = makeActionButton("Plant Seed");
+        btnWater = makeActionButton("Water Plant");
+        btnRefill = makeActionButton("Refill Can");
+        btnFertilize = makeActionButton(" Fertilize");
+        btnHarvest = makeActionButton("Remove/Harvest");
+        btnExcavate = makeActionButton("Excavate");
         btnNextDay = makeActionButton("⏭ Next Day");
 
         btnNextDay.setBackground(new Color(180, 220, 180));
