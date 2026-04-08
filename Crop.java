@@ -1,6 +1,5 @@
 /**
- * Represents a crop produced when a plant is harvested in the
- * Verdant Sun Farming Simulator.
+ * Represents a crop produced when a plant is harvested
  *
  * Crops have a name, a base price per piece, a quantity, and a flag
  * indicating whether they are a Root Crop. Root Crops receive a 50%
